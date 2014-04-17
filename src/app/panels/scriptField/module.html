@@ -1,0 +1,57 @@
+<div ng-controller='scriptField' ng-init="init()">
+    <style>
+        .pieLabel { pointer-events: none }
+        .terms-legend-term {
+            word-break: break-all;
+        }
+    </style>
+
+    <!-- START Pie or bar chart -->
+    <div ng-show="panel.counter_pos != 'none' && (panel.chart == 'bar' || panel.chart == 'pie')" id='{{$id}}-legend'>
+        <!-- vertical legend above -->
+        <table class="small" ng-show="panel.arrangement == 'vertical'">
+            <tr ng-repeat="term in legend">
+                <td><i class="icon-circle" ng-style="{color:term.color}"></i></td> <td class="terms-legend-term" style="padding-right:10px;padding-left:10px;"></td><td>{{term.data[0][1]}}</td>
+            </tr>
+        </table>
+
+        <!-- horizontal legend above -->
+    <span class="small" ng-show="panel.arrangement == 'horizontal'" ng-repeat="term in legend" style="float:left;padding-left: 10px;">
+     <span><i class="icon-circle" ng-style="{color:term.color}"></i> <span class="terms-legend-term"></span> ({{term.data[0][1]}}) </span>
+    </span>
+
+    <span class="small pull-left" ng-show="panel.tmode == 'terms_stats'">
+      &nbsp | {{ panel.tstat }} of <strong>{{ panel.valuefield }}</strong>
+    </span>
+
+    </div>
+
+    <!-- keep legend from over lapping -->
+    <div style="clear:both"></div>
+
+    <div ng-show="panel.chart == 'pie' || panel.chart == 'bar'" terms-chart params="{{panel}}" style="position:relative" class="pointer"></div>
+
+    <!-- END Pie or Bar chart -->
+
+    <table ng-style="panel.style" class="table table-hover table-condensed" ng-show="panel.chart == 'table'">
+        <thead>
+        <th>Term</th> <th>{{ panel.tmode == 'terms_stats' ? panel.tstat : 'Count' }}</th> <th>Action</th>
+        </thead>
+        <tbody bindonce ng-repeat="term in data| slice:panel.offset:panel.offset+panel.size" ng-class-odd="'odd'">
+            <tr ng-click="showall(term)" class="pointer">
+                <td bo-text="term.label|stringify|tableTruncate:panel.trimFactor:1"></td>
+                <td>{{term.data[0][1]}}</td>
+                <td>
+                    <span ng-hide="term.meta == 'other'">
+                      <i class='icon-search pointer' ng-click="build_search(term)"></i>
+                      <i class='icon-ban-circle pointer' ng-click="build_search(term,true)"></i>
+                    </span>
+                </td>
+            </tr>
+            <tr ng-if="term.showall">
+                <td bo-text="term.label"></td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
