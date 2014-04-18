@@ -1,3 +1,3 @@
 # Cabana
 
-a copy of kibana3 and with a little custom
+customized [elasticsearch/kibana](https://github.com/elasticsearch/kibana), based on kibana-3.0.1.
